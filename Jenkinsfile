@@ -22,7 +22,7 @@ pipeline {
                 script {
                     buildJar() //use the library
                 }
-            }:
+            }
         }
         stage("build image") {
             steps {
