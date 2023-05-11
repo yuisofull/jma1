@@ -1,6 +1,13 @@
 #!/usr/bin/env groovy
 
-@Library('jenkins-shared-library')//call the library
+//@Library('jenkins-shared-library')//call the library if you have define it in Global Pipeline Libraries
+
+library identifier: 'jenkins-shared-library@master',retriever: modernSCM(//call the library
+    [$class : 'GitSCMSource',
+    remote: 'https://github.com/yuisofull/jenkins-shared-library.git',
+    credentialsID: 'git-repo'
+    ]
+)
 
 def gv
 
