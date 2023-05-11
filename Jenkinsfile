@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-@Library('jenkins-shared-library')
+@Library('jenkins-shared-library')//call the library
 
 def gv
 
@@ -20,14 +20,14 @@ pipeline {
         stage("build jar") {
             steps {
                 script {
-                    buildJar()
+                    buildJar() //use the library
                 }
             }
         }
         stage("build image") {
             steps {
                 script {
-                    buildImage 'yuisofull/demo:jma-1.3'
+                    buildImage 'yuisofull/demo:jma-1.3' //pass the parameter to the library
                 }
             }
         }
