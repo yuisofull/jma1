@@ -22,12 +22,12 @@ pipeline {
                 script {
                     buildJar() //use the library
                 }
-            }
+            }:
         }
         stage("build image") {
             steps {
                 script {
-                    buildImage 'yuisofull/demo:jma-1.3' //pass the parameter to the library
+                    buildImage 'yuisofull/demo:jma-1.4' //pass the parameter to the library
                 }
             }
         }
