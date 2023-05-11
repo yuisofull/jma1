@@ -27,7 +27,9 @@ pipeline {
         stage("build image") {
             steps {
                 script {
-                    buildImage 'yuisofull/demo:jma-1.4' //pass the parameter to the library
+                    dockerLogin()
+                    buildImage 'yuisofull/demo:jma-1.5' //pass the parameter to the library
+                    dockerPush 'yuisofull/demo:jma-1.5'
                 }
             }
         }
