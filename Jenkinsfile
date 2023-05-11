@@ -27,7 +27,7 @@ pipeline {
         stage("build image") {
             steps {
                 script {
-                    buildImage()
+                    buildImage 'yuisofull/demo:jma-1.3'
                 }
             }
         }
