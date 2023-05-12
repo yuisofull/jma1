@@ -28,11 +28,12 @@ pipeline {
         stage('build image') {
             steps {
                 script {
-                echo "Building the image..."
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                    echo "Building the image..."
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
         			sh "echo $PASS | docker login -u $USER --password-stdin"
         			sh "docker build -t yuisofull/demo:${IMAGE_NAME} ."
         			sh "docker push yuisofull/demo:${IMAGE_NAME}"
+                    }
                 }
             }
         }
