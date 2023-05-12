@@ -13,8 +13,8 @@ pipeline {
                     sh 'mvn build-helper:parse-version versions:set \
                         -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
                         versions:commit'
-                    def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
-                    def version = matcher[0][1]
+                    def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'//find in pom.xml with the pattern
+                    def version = matcher[0][1]//match the pattern with content between tags
                     env.IMAGE_NAME = "$version-$BUILD_NUMBER"
                 }
             }
