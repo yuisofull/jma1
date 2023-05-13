@@ -58,8 +58,8 @@ pipeline {
                 script {
                     echo "commiting the updated version..."
     			    withCredentials([usernamePassword(credentialsId: 'github-api', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh 'git config --global user.email "jenkins@example.com"'
-                        sh 'git config --global user.name "jenkins"'
+                        //sh 'git config --global user.email "jenkins@example.com"'
+                        //sh 'git config --global user.name "jenkins"'
 
                         sh 'git status'
                         sh 'git branch'
