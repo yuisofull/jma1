@@ -53,5 +53,23 @@ pipeline {
                 }
             }
         }
+        stage("commit version update") {
+            steps {
+                script {
+                    echo "commiting the updated version..."
+    			    withCredentials([usernamePassword(credentialsId: 'git-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                        sh 'git config --global user.email "jenkins@example.com"'
+                        sh 'git config --global user.name "jenkins"'
+
+                        sh 'git status'
+                        sh 'git branch'
+                        sh 'git config --list'
+
+                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/yuisofull/jma1.git"
+                        sh 'git add . && git commit -m "ci:version bump" && git push origin HEAD:jenkins-jobs'
+                	}
+            	}
+           }
+	    }
     }
 }
