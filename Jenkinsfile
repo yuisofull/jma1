@@ -26,7 +26,7 @@ pipeline {
 				    	withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS2', usernameVariable: 'USER2')]) {
 							def dockerLogin = "echo ${PASS2} | docker login -u ${USER2} --password-stdin"
 							def dockerCmd = "docker run -dp 8000:80 yuisofull/demo:react-nodejs-example-1.0"
-							sh "sshpass -p ${PASS} ssh -t -o StrictHostKeyChecking=no docker@34.125.100.56 ${dockerLogin} && ${dockerCmd}"
+							sh "sshpass -p ${PASS} ssh -t -o StrictHostKeyChecking=no docker@34.125.1.202 ${dockerLogin} && ${dockerCmd}"
 						}
 					}
                 }
