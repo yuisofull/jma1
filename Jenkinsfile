@@ -24,7 +24,7 @@ pipeline {
                     echo "Deploying..."
 					withCredentials([usernamePassword(credentialsId: 'docker-gcp-ssh', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
 				    	withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS2', usernameVariable: 'USER2')]) {
-							def dockerLogin = "echo ${PASS2} | docker login -u ${USER2} --password-stdin"
+						def dockerLogin = "docker login -u ${USER2} -p ${PASS2}"
 							def dockerCmd = "docker run -dp 8000:80 yuisofull/demo:react-nodejs-example-1.0"
 							sh "sshpass -p ${PASS} ssh -T -o StrictHostKeyChecking=no docker@34.125.1.202 ${dockerLogin}"
 							sh "sshpass -p ${PASS} ssh -T -o StrictHostKeyChecking=no docker@34.125.1.202 ${dockerCmd}"
