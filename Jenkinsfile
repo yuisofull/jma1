@@ -22,9 +22,6 @@ pipeline {
 				script {
 					//login docker
                     echo "Deploying..."
-					sh 'sudo apt-get update'
-					sh 'apt-get install -y sudo'
-                	sh 'sudo apt-get install -y sshpass'
 					withCredentials([usernamePassword(credentialsId: 'docker-gcp-ssh', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
 				    	withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS2', usernameVariable: 'USER2')]) {
 							def dockerLogin = "echo ${PASS2} | docker login -u ${USER2} --password-stdin"
