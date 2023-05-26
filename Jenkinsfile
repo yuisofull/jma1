@@ -27,10 +27,9 @@ pipeline {
         steps {
             script {
                 echo "Building the image..."
-                    dockerLogin() 
-                    buildImage(env.IMAGE_NAME)
-                    dockerPush(env.IMAGE_NAME)
-                }
+                dockerLogin() 
+                buildImage(env.IMAGE_NAME)
+                dockerPush(env.IMAGE_NAME)
             }
         }
     }
@@ -48,6 +47,7 @@ pipeline {
 
                 def ggInstance = "docker@34.125.125.162"
                 def dockerComposeCmd = "docker-compose -f docker-compose.yaml up"
+
                 sshagent(['docker']) {
                     sh "scp -o StrictHostKeyChecking=no docker.compose.yaml ${ggInstance}:/home/docker"
                     sh "shh -o StrictHostKeyChecking=no ${ggInstance} ${dockerComposeCmd}"
