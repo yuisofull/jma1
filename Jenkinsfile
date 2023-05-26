@@ -47,10 +47,10 @@ pipeline {
                     echo "Deploying docker image to EC2..."
 
                     def ggInstance = "docker@34.125.125.162"
-                    def dockerComposeCmd = "docker-compose -f docker-compose.yaml up"
+                    def dockerComposeCmd = "docker-compose -f docker-compose.yaml up --detach"
 
                     sshagent(['docker']) {
-                        sh "scp -o StrictHostKeyChecking=no docker.compose.yaml ${ggInstance}:/home/docker"
+                        sh "scp -o StrictHostKeyChecking=no docker-compose.yaml ${ggInstance}:/home/docker"
                         sh "shh -o StrictHostKeyChecking=no ${ggInstance} ${dockerComposeCmd}"
                     }
                 }
