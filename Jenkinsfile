@@ -1,52 +1,56 @@
 #!/usr/bin/env groovy
 
-library identifier: 'jenkins-shared-library@master', retriever: modernSCM(
-    [$class: 'GitSCMSource',
-     remote: 'https://gitlab.com/nanuchi/jenkins-shared-library.git',
-     credentialsId: 'gitlab-credentials'
+library identifier: 'jenkins-shared-library@master',retriever: modernSCM(//call the library
+    [$class : 'GitSCMSource',
+    remote: 'https://github.com/yuisofull/jenkins-shared-library.git',
+    credentialsID: 'git-repo'
     ]
 )
 
 pipeline {
     agent any
     tools {
-        maven 'Maven'
+        maven 'maven-3.6'
     }
     environment {
-        IMAGE_NAME = 'nanajanashia/demo-app:java-maven-2.0'
+        IMAGE_NAME = 'yuisofull/demo:jvm-sshagent'
     }
-    stages {
-        stage('build app') {
-            steps {
-               script {
-                  echo 'building application jar...'
-                  buildJar()
-               }
+    stage('build app') {
+        steps {
+            script {
+                echo "Building the application..."
+                buildJar()
             }
         }
-        stage('build image') {
-            steps {
-                script {
-                   echo 'building docker image...'
-                   buildImage(env.IMAGE_NAME)
-                   dockerLogin()
-                   dockerPush(env.IMAGE_NAME)
+    }
+    stage('build image') {
+        steps {
+            script {
+                echo "Building the image..."
+                    dockerLogin() 
+                    buildImage(env.IMAGE_NAME)
+                    dockerPush(env.IMAGE_NAME)
                 }
             }
         }
-        stage('deploy') {
-            steps {
-                script {
-                   echo 'deploying docker image to EC2...'
+    }
+    stage('test') {
+        steps {
+            script {
+                echo "Testing the application..."
+            }
+        }
+    }
+    stage('deploy') {
+        steps {
+            script {
+                echo "Deploying docker image to EC2..."
 
-                   def shellCmd = "bash ./server-cmds.sh ${IMAGE_NAME}"
-                   def ec2Instance = "ec2-user@35.180.251.121"
-
-                   sshagent(['ec2-server-key']) {
-                       sh "scp -o StrictHostKeyChecking=no server-cmds.sh ${ec2Instance}:/home/ec2-user"
-                       sh "scp -o StrictHostKeyChecking=no docker-compose.yaml ${ec2Instance}:/home/ec2-user"
-                       sh "ssh -o StrictHostKeyChecking=no ${ec2Instance} ${shellCmd}"
-                   }
+                def ggInstance = "docker@34.125.125.162"
+                def dockerComposeCmd = "docker-compose -f docker-compose.yaml up"
+                sshagent(['docker']) {
+                    sh "scp -o StrictHostKeyChecking=no docker.compose.yaml ${ggInstance}:/home/docker"
+                    sh "shh -o StrictHostKeyChecking=no ${ggInstance} ${dockerComposeCmd}"
                 }
             }
         }
