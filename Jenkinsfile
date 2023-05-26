@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     echo "commiting the updated version..."
-    			    withCredentials([usernamePassword(credentialsId: 'github-api', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+    		        withCredentials([usernamePassword(credentialsId: 'github-api', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                         //sh 'git config --global user.email "jenkins@example.com"'
                         //sh 'git config --global user.name "jenkins"'
 
@@ -69,7 +69,7 @@ pipeline {
                         sh 'git add . && git commit -m "ci:version bump" && git push origin HEAD:jenkins-jobs'
                 	}
             	}
-           }
-	    }
+            }
+	}
     }
 }
