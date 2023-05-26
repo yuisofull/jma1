@@ -15,42 +15,44 @@ pipeline {
     environment {
         IMAGE_NAME = 'yuisofull/demo:jvm-sshagent'
     }
-    stage('build app') {
-        steps {
-            script {
-                echo "Building the application..."
-                buildJar()
+    stages{
+        stage('build app') {
+            steps {
+                script {
+                    echo "Building the application..."
+                    buildJar()
+                }
             }
         }
-    }
-    stage('build image') {
-        steps {
-            script {
-                echo "Building the image..."
-                dockerLogin() 
-                buildImage(env.IMAGE_NAME)
-                dockerPush(env.IMAGE_NAME)
+        stage('build image') {
+            steps {
+                script {
+                    echo "Building the image..."
+                    dockerLogin() 
+                    buildImage(env.IMAGE_NAME)
+                    dockerPush(env.IMAGE_NAME)
+                }
             }
         }
-    }
-    stage('test') {
-        steps {
-            script {
-                echo "Testing the application..."
+        stage('test') {
+            steps {
+                script {
+                    echo "Testing the application..."
+                }
             }
         }
-    }
-    stage('deploy') {
-        steps {
-            script {
-                echo "Deploying docker image to EC2..."
+        stage('deploy') {
+            steps {
+                script {
+                    echo "Deploying docker image to EC2..."
 
-                def ggInstance = "docker@34.125.125.162"
-                def dockerComposeCmd = "docker-compose -f docker-compose.yaml up"
+                    def ggInstance = "docker@34.125.125.162"
+                    def dockerComposeCmd = "docker-compose -f docker-compose.yaml up"
 
-                sshagent(['docker']) {
-                    sh "scp -o StrictHostKeyChecking=no docker.compose.yaml ${ggInstance}:/home/docker"
-                    sh "shh -o StrictHostKeyChecking=no ${ggInstance} ${dockerComposeCmd}"
+                    sshagent(['docker']) {
+                        sh "scp -o StrictHostKeyChecking=no docker.compose.yaml ${ggInstance}:/home/docker"
+                        sh "shh -o StrictHostKeyChecking=no ${ggInstance} ${dockerComposeCmd}"
+                    }
                 }
             }
         }
