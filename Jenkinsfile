@@ -51,7 +51,7 @@ pipeline {
 
                     sshagent(['docker']) {
                         sh "scp -o StrictHostKeyChecking=no docker-compose.yaml ${ggInstance}:/home/docker"
-                        sh "shh -o StrictHostKeyChecking=no ${ggInstance} ${dockerComposeCmd}"
+                        sh "ssh -o StrictHostKeyChecking=no ${ggInstance} ${dockerComposeCmd}"
                     }
                 }
             }
