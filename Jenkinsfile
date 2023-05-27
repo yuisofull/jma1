@@ -35,6 +35,7 @@ pipeline {
         			sh "echo $PASS | docker login -u $USER --password-stdin"
         			sh "docker build -t yuisofull/demo:${IMAGE_NAME} ."
         			sh "docker push yuisofull/demo:${IMAGE_NAME}"
+                    sh "docker logout"
                     }
                 }
             }
